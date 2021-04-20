@@ -1,4 +1,4 @@
-#Helm install of sample "hello world" app on IKS
+#Helm install of sample app on IKS
 data "terraform_remote_state" "iksws" {
   backend = "remote"
   config = {
@@ -14,32 +14,14 @@ variable "ikswsname" {
 }
 
 resource helm_release nginx_ingress {
-  name       = "iwok8scollector"
+  name       = "nginx-ingress-controller"
 
-  repository = "https://falkor.tesseractinternal.com/platform-ui"
-  repository_username = "dragonfly" 
-  repository_password = "[>r}WjuW+og{L1r<"
-  chart      = "intersight/iwok8scollector"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "nginx-ingress-controller"
 
   set {
     name  = "service.type"
     value = "LoadBalancer"
-  }
-  set {
-    name  = "namespace"
-    value = "iwo-collector"
-  }
-  set {
-    name  = "iwoServerVersion"
-    value = "8.0"
-  }
-  set {
-    name  = "collectorImage.tag"
-    value = "8.0.6"
-  }
-  set {
-    name  = "targetName"
-    value = "mycluster"
   }
 }
 
@@ -55,5 +37,4 @@ provider "helm" {
 locals {
   kube_config = yamldecode(data.terraform_remote_state.iksws.outputs.kube_config)
 }
-
 
