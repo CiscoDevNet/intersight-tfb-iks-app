@@ -1,4 +1,4 @@
-#Helm install of sample app on IKS
+#Helm install of sample "hello world" app on IKS
 data "terraform_remote_state" "iksws" {
   backend = "remote"
   config = {
