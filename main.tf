@@ -4,14 +4,14 @@ data "terraform_remote_state" "iksws" {
   config = {
     organization = "CiscoDevNet"
     workspaces = {
-      name = var.ikswsname 
+      name = local.ikswsname 
     }
   }
 }
 
-variable "ikswsname" {
-  type = string
-}
+#variable "ikswsname" {
+#  type = string
+#}
 
 resource helm_release nginx_ingress {
   name       = "nginx-ingress-controller"
@@ -36,5 +36,6 @@ provider "helm" {
 
 locals {
   kube_config = yamldecode(data.terraform_remote_state.iksws.outputs.kube_config)
+  ikswsname = yamldecode(data.terraform_remote_state.iksws.outputs.ikswsname)
 }
 
